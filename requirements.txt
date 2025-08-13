@@ -19,3 +19,4 @@ urllib3==2.5.0
 validate-email-address==1
 python-dotenv==1.1.1
 whitenoise
+gunicorn==21.2.0
