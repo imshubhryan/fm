@@ -1,7 +1,6 @@
 .env
 client_secret.json
-# Django
-*.sqlite3
-*.pyc
+
+db.sqlite3
 __pycache__/
-.env
+*.pyc
