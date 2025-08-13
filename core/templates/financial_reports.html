@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  .container.my-5 {
+    background-color: #e6e6e6ff;
+    padding: 2rem 1rem 2rem 1rem;
+    border-radius: 12px;
+    margin-top: 0 !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  /* Make heading and labels black */
+  h2.text-center {
+    color: black !important;
+  }
+
+  form label.form-label {
+    color: black !important;
+  }
+
+  .gradient-card {
+    background: linear-gradient(145deg, rgba(50, 100, 200, 0.85), rgba(20, 60, 130, 0.85));
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    color: white;
+    transition: transform 0.3s ease;
+  }
+  .gradient-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+  }
+
+  .gradient-btn {
+    background: linear-gradient(145deg, #00ffc3, #00bfa5);
+    border: none;
+    color: white;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+  .gradient-btn:hover {
+    background: linear-gradient(145deg, #00e6b0, #00a88f);
+  }
+
+  @media (max-width: 767px) {
+    form.row.g-3.justify-content-center.mb-5 {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    form.row.g-3.justify-content-center.mb-5 > div {
+      width: 100% !important;
+      max-width: 320px;
+    }
+
+    .row.mb-4, .row {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .row.mb-4 > div, .row > div {
+      max-width: 100%;
+    }
+
+    .container.my-5 {
+      margin-top: 0 !important;
+      padding-top: 1rem !important;
+      margin-bottom: 1.5rem !important;
+    }
+  }
+</style>
+
+
+{% load extra_filters %}
+<div class="container my-5">
+  <h2 class="mb-4 text-center text-white">Financial Reports</h2>
+
+  <form method="get" class="row g-3 justify-content-center mb-5">
+    <div class="col-auto">
+      <label for="month" class="form-label text-white">Select Month</label>
+      <select name="month" id="month" class="form-select">
+        {% for num, name in months_list %}
+          <option value="{{ num }}" {% if num == selected_month %}selected{% endif %}>{{ name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-auto">
+      <label for="year" class="form-label text-white">Select Year</label>
+      <select name="year" id="year" class="form-select">
+        {% for y in years_list %}
+          <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-auto d-flex align-items-end">
+      <button type="submit" class="btn gradient-btn">Show Report</button>
+    </div>
+  </form>
+
+  <!-- Monthly Report Card -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card gradient-card p-4 text-center">
+        <h5>Monthly Income ( {{ month_name }} )</h5>
+        <h3>₹{{ total_income_month|floatformat:2 }}</h3>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card gradient-card p-4 text-center">
+        <h5>Monthly Expenses ({{ month_name }})</h5>
+        <h3>₹{{ total_expense_month|floatformat:2 }}</h3>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card gradient-card p-4 text-center">
+        <h5>Monthly Savings ({{ month_name }})</h5>
+        <h3>₹{{ savings_month|floatformat:2 }}</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- Yearly Report Card -->
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card gradient-card p-4 text-center">
+        <h5>Yearly Income ({{ selected_year }})</h5>
+        <h3>₹{{ total_income_year|floatformat:2 }}</h3>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card gradient-card p-4 text-center">
+        <h5>Yearly Expenses ({{ selected_year }})</h5>
+        <h3>₹{{ total_expense_year|floatformat:2 }}</h3>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card gradient-card p-4 text-center">
+        <h5>Yearly Savings ({{ selected_year }})</h5>
+        <h3>₹{{ savings_year|floatformat:2 }}</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+<script>
+
+  flatpickr("#yearpicker", {
+  plugins: [new flatpickr.plugins.yearSelect({})],
+  dateFormat: "Y", // year format
+  defaultDate: new Date().getFullYear()
+});
+</script>
+
+{% endblock %}

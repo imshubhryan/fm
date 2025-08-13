@@ -1,0 +1,353 @@
+{% extends "base.html" %}
+{% block start %}
+
+<style>
+  /* Base Styles */
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #4682ff, #78b4ff);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+  }
+  
+  /* Main Content Box - Wider on Mobile */
+  .content-box {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    width: 100%; /* Full width */
+    max-width: 450px; /* Maximum width */
+    margin: 0 auto; /* Center the box */
+  }
+  
+  /* Animated Border Effect */
+  .content-box::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+      rgba(255,255,255,0.6) 0%, 
+      rgba(255,255,255,0.1) 50%, 
+      rgba(255,255,255,0.6) 100%);
+    z-index: -1;
+    border-radius: 20px;
+    animation: borderGlow 4s linear infinite;
+    background-size: 200% 200%;
+  }
+  
+  @keyframes borderGlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  /* Form Elements */
+  .form-control {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    transition: all 0.3s ease;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+  }
+  
+  .form-control:focus {
+    background-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    opacity: 1;
+  }
+  
+  .form-label {
+    color: white;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Button Styles */
+  .gradient-btn {
+    background: linear-gradient(135deg, #00c9ff, #0095ff);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 201, 255, 0.3);
+  }
+  
+  .gradient-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 201, 255, 0.4);
+  }
+  
+  /* Text Styles */
+  .text-white {
+    color: white !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Logo Image */
+  .logo-img {
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+    transition: all 0.3s ease;
+  }
+  
+  .logo-img:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Link Styles */
+  .auth-link {
+    color: white !important;
+    font-weight: 600;
+    text-decoration: none;
+    position: relative;
+  }
+  
+  .auth-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: white;
+    transition: width 0.3s ease;
+  }
+  
+  .auth-link:hover::after {
+    width: 100%;
+  }
+  
+  /* Social Buttons */
+  .social-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    transition: all 0.3s ease;
+  }
+  
+  .social-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  /* Checkbox Styles */
+  .form-check-input {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .form-check-input:checked {
+    background-color: #00c9ff;
+    border-color: #00c9ff;
+  }
+  
+  /* Mobile Responsive - Wider Box */
+  @media (max-width: 767.98px) {
+    body {
+      padding: 1rem;
+      background: linear-gradient(135deg, #4682ff, #78b4ff);
+      display: flex;
+      align-items: center;
+    }
+    
+    .content-box {
+      padding: 1.8rem;
+      border-radius: 14px;
+      width: 92%;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    
+    .container.d-flex {
+      padding: 0;
+      width: 100%;
+    }
+    
+    .content-box::before {
+      border-radius: 16px;
+    }
+    
+    .form-control {
+      padding: 0.7rem 1rem;
+    }
+  }
+  
+  /* Chrome Mobile Fix */
+  @media screen and (-webkit-min-device-pixel-ratio:0) {
+    @media (max-width: 767.98px) {
+      body {
+        min-height: -webkit-fill-available;
+      }
+    }
+  }
+</style>
+
+<div class="container d-flex align-items-center justify-content-center min-vh-100 p-0">
+  <div class="row justify-content-center w-100 m-0">
+    <div class="col-12 p-0">
+      <div class="content-box">
+        <div class="text-center mb-4">
+          <img src="https://cdn-icons-png.flaticon.com/128/295/295128.png" 
+               alt="Logo" 
+               class="img-fluid logo-img" 
+               style="max-height: 70px;">
+        </div>
+        <h3 class="mb-4 text-center text-white fw-bold">Welcome</h3>
+
+        
+
+        <form id="loginForm" method="POST" novalidate>
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="username" class="form-label">Email</label>
+            <input type="text" name="username" class="form-control" id="username" required placeholder="you@example.com">
+            <div class="invalid-feedback text-white">Please enter a valid email address.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" id="password" required placeholder="••••••••">
+            <div class="invalid-feedback text-white">Please enter your password.</div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="rememberMe">
+              <label class="form-check-label text-white" for="rememberMe">Remember me</label>
+            </div>
+            <a href="{% url 'forget_password' %}" class="auth-link">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn gradient-btn w-100" id="loginBtn">
+            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+            <span class="btn-text">Sign in</span>
+          </button>
+
+          <div class="text-center my-3 text-white">OR CONTINUE WITH</div>
+
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn social-btn w-100 d-flex align-items-center justify-content-center">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f6e3f6ac-a382-4e07-ba8d-317c826f4d5c.png" alt="Google" style="width:20px;" class="me-2"> Google
+              </a>
+            </div>
+            <div class="col-6">
+              <a href="{% url 'social:begin' 'facebook' %}" class="btn social-btn w-100 d-flex align-items-center justify-content-center">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/a0d1f3ed-b055-4dff-a36a-3e8d25e85147.png" alt="Facebook" style="width:20px;" class="me-2"> Facebook
+              </a>
+            </div>
+          </div>
+
+          <p class="text-center text-white">Don't have an account? <a href="{% url 'signup' %}" class="auth-link fw-bold">Sign up</a></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const emailField = document.getElementById("username");
+const passwordField = document.getElementById("password");
+const form = document.getElementById("loginForm");
+
+function showError(field, message) {
+    field.classList.add("is-invalid");
+    field.classList.remove("is-valid");
+    field.nextElementSibling.textContent = message;
+    field.nextElementSibling.style.display = "block";
+}
+
+function showSuccess(field) {
+    field.classList.add("is-valid");
+    field.classList.remove("is-invalid");
+    field.nextElementSibling.style.display = "none";
+}
+
+function validateFromBackend() {
+    let email = emailField.value.trim();
+    let password = passwordField.value.trim();
+
+    if (!emailRegex.test(email)) {
+        showError(emailField, "Please enter a valid email address.");
+        showSuccess(passwordField);
+        return;
+    } else {
+        showSuccess(emailField);
+    }
+
+    if (password === "") {
+        showError(passwordField, "Please enter your password.");
+        return;
+    }
+
+    fetch(`/validate-login/?username=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "error") {
+                if (data.field === "username") {
+                    showError(emailField, data.message);
+                    showSuccess(passwordField);
+                } else if (data.field === "password") {
+                    showSuccess(emailField);
+                    showError(passwordField, data.message);
+                }
+            } else {
+                showSuccess(emailField);
+                showSuccess(passwordField);
+            }
+        });
+}
+
+emailField.addEventListener("blur", validateFromBackend);
+passwordField.addEventListener("blur", validateFromBackend);
+
+passwordField.addEventListener("input", () => {
+    const pwd = passwordField.value.trim();
+    if (pwd.length > 0) {
+        showSuccess(passwordField);
+    } else {
+        showError(passwordField, "Please enter your password.");
+    }
+});
+
+form.addEventListener("submit", (e) => {
+    let validEmail = emailRegex.test(emailField.value.trim());
+    let validPassword = passwordField.value.trim() !== "";
+
+    if (!validEmail) {
+        e.preventDefault();
+        showError(emailField, "Please enter a valid email address.");
+    } else {
+        showSuccess(emailField);
+    }
+
+    if (!validPassword) {
+        e.preventDefault();
+        showError(passwordField, "Please enter your password.");
+    } else {
+        showSuccess(passwordField);
+    }
+});
+</script>
+
+{% endblock %}

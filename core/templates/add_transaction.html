@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  /* Navbar ke neeche margin/padding remove karne ke liye */
+  #main-content {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* Mobile-specific smaller gaps */
+  @media (max-width: 767.98px) {
+    form.p-3 {
+      padding: 1rem !important;
+    }
+    .row.g-3 {
+      --bs-gutter-x: 0.5rem;
+      --bs-gutter-y: 0.5rem;
+    }
+    .row.g-3 > [class*="col-"] {
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+    }
+    label.form-label {
+      margin-bottom: 0.25rem;
+      font-size: 0.9rem;
+    }
+    input.form-control, select.form-select {
+      padding: 0.375rem 0.5rem;
+      font-size: 0.9rem;
+    }
+    button.btn {
+      padding: 0.4rem 1.2rem;
+      font-size: 0.95rem;
+    }
+  }
+</style>
+
+<div class="mt-4 p-4 rounded" style="background-color: #f8f9fa;">
+  <h3 class="mb-4">Add New Transaction</h3>
+
+  <!-- POPUP MESSAGE -->
+  {% if messages %}
+    <div id="popup-message" style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(255,0,0,0.9);
+        color: white;
+        padding: 12px 18px;
+        border-radius: 6px;
+        font-weight: bold;
+        z-index: 9999;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    ">
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+    </div>
+
+    <script>
+      setTimeout(() => {
+        const popup = document.getElementById("popup-message");
+        if (popup) {
+          popup.style.transition = "opacity 0.5s ease";
+          popup.style.opacity = "0";
+          setTimeout(() => popup.remove(), 500);
+        }
+      }, 2000);
+    </script>
+  {% endif %}
+
+  <form method="POST" action="" class="p-3">
+    {% csrf_token %}
+    <div class="row g-3">
+      <!-- Date -->
+      <div class="col-md-4 col-12">
+        <label for="date" class="form-label">Date</label>
+        <input type="date" class="form-control" id="date" name="date" required>
+      </div>
+
+      <!-- Description -->
+      <div class="col-md-4 col-12">
+        <label for="description" class="form-label">Description</label>
+        <input type="text" class="form-control" id="description" name="description" required>
+      </div>
+
+      <!-- Category -->
+      <div class="col-md-4 col-12">
+        <label for="category" class="form-label">Category</label>
+        <select class="form-select" id="category" name="category" required>
+          <option selected disabled value="">Choose...</option>
+          <option>Food</option>
+          <option>Utilities</option>
+          <option>Entertainment</option>
+          <option>Transport</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <!-- Amount -->
+      <div class="col-md-4 col-12">
+        <label for="amount" class="form-label">Amount  <small>(use - for expense)</small> </label>
+        <input type="number" class="form-control" id="amount" name="amount" step="0.01" required>
+      </div>
+
+      <!-- Button -->
+      <div class="col-12">
+        <button type="submit" class="btn text-white px-4" style="background: linear-gradient(145deg, rgba(0, 200, 200, 0.9), rgba(0, 150, 150, 0.8)); border-radius: 8px;">
+          Add Transaction
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

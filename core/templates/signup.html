@@ -1,0 +1,317 @@
+{% extends "base.html" %}
+{% block start %}
+
+<style>
+  /* Base Styles */
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #4682ff, #78b4ff);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+  }
+  
+  /* Main Content Box - Wider on Mobile */
+  .content-box {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    width: 100%; /* Full width */
+    max-width: 450px; /* Maximum width */
+    margin: 0 auto; /* Center the box */
+  }
+  
+  /* Animated Border Effect */
+  .content-box::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+      rgba(255,255,255,0.6) 0%, 
+      rgba(255,255,255,0.1) 50%, 
+      rgba(255,255,255,0.6) 100%);
+    z-index: -1;
+    border-radius: 20px;
+    animation: borderGlow 4s linear infinite;
+    background-size: 200% 200%;
+  }
+  
+  @keyframes borderGlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  /* Form Elements */
+  .form-control {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    transition: all 0.3s ease;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+  }
+  
+  .form-control:focus {
+    background-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    opacity: 1;
+  }
+  
+  .form-label {
+    color: white;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Button Styles */
+  .gradient-btn {
+    background: linear-gradient(135deg, #00c9ff, #0095ff);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 201, 255, 0.3);
+  }
+  
+  .gradient-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 201, 255, 0.4);
+  }
+  
+  /* Text Styles */
+  .text-white {
+    color: white !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Logo Image */
+  .logo-img {
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+    transition: all 0.3s ease;
+  }
+  
+  .logo-img:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Link Styles */
+  .login-link {
+    color: white !important;
+    font-weight: 600;
+    text-decoration: none;
+    position: relative;
+  }
+  
+  .login-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: white;
+    transition: width 0.3s ease;
+  }
+  
+  .login-link:hover::after {
+    width: 100%;
+  }
+  
+  /* Mobile Responsive - Wider Box */
+  @media (max-width: 767.98px) {
+    body {
+      padding: 1rem;
+      background: linear-gradient(135deg, #4682ff, #78b4ff);
+      display: flex;
+      align-items: center;
+    }
+    
+    .content-box {
+      padding: 1.8rem; /* Slightly more padding */
+      border-radius: 14px;
+      width: 92%; /* Wider on mobile */
+      max-width: 100%; /* Allow it to take full width */
+      margin: 0 auto; /* Center it */
+    }
+    
+    .container.d-flex {
+      padding: 0;
+      width: 100%;
+    }
+    
+    .content-box::before {
+      border-radius: 16px;
+    }
+    
+    .form-control {
+      padding: 0.7rem 1rem; /* Slightly larger touch targets */
+    }
+  }
+  
+  /* Chrome Mobile Fix */
+  @media screen and (-webkit-min-device-pixel-ratio:0) {
+    @media (max-width: 767.98px) {
+      body {
+        min-height: -webkit-fill-available;
+      }
+    }
+  }
+</style>
+
+<div class="container d-flex align-items-center justify-content-center min-vh-100 p-0">
+  <div class="row justify-content-center w-100 m-0">
+    <div class="col-12 p-0"> <!-- Changed to col-12 for full width on mobile -->
+      <div class="content-box">
+        <div class="text-center mb-4">
+          <img src="https://cdn-icons-png.flaticon.com/128/295/295128.png" 
+               alt="Logo" 
+               class="img-fluid logo-img" 
+               style="max-height: 70px;">
+        </div>
+        <h3 class="mb-4 text-center text-white fw-bold">Create Your Account</h3>
+
+        <form id="signupForm" method="POST" novalidate>
+          {% csrf_token %}
+          
+          <!-- Full Name -->
+          <div class="mb-3">
+            <label for="name" class="form-label">Full Name</label>
+            <input type="text" name="fullname" class="form-control" id="name" placeholder="Enter Your Name" required>
+            <div class="invalid-feedback text-white">Please enter your full name (7-50 characters).</div>
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="username" class="form-label">Email</label>
+            <input type="email" name="username" class="form-control" id="username" placeholder="you@example.com" required>
+            <div class="invalid-feedback text-white">Please enter a valid email address.</div>
+          </div>
+
+          <!-- Password -->
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password1" class="form-control" id="password" placeholder="••••••••" required>
+            <div class="invalid-feedback text-white">Password must be 8+ characters with uppercase, lowercase, number & special char.</div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <input type="password" name="password2" class="form-control" id="confirmPassword" placeholder="••••••••" required>
+            <div class="invalid-feedback text-white">Passwords do not match.</div>
+          </div>
+
+          <button type="submit" class="btn gradient-btn w-100 mt-4" id="signupBtn">
+            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+            <span class="btn-text">Sign Up</span>
+          </button>
+
+          <p class="text-center text-white mt-4 mb-0">Already have an account? 
+            <a href="{% url 'login_page' %}" class="login-link fw-bold">Login</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Form Validation
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('signupForm');
+    const nameField = document.getElementById('name');
+    const emailField = document.getElementById('username');
+    const passwordField = document.getElementById('password');
+    const confirmPasswordField = document.getElementById('confirmPassword');
+    const signupBtn = document.getElementById('signupBtn');
+    
+    // Regex Patterns
+    const nameRegex = /^[A-Za-z\s]{7,50}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+    
+    // Validate Field Function
+    function validateField(field, regex, errorMsg) {
+      const isValid = regex.test(field.value.trim());
+      field.classList.toggle('is-invalid', !isValid);
+      return isValid;
+    }
+    
+    // Real-time Validation
+    nameField.addEventListener('input', () => {
+      validateField(nameField, nameRegex, 'Please enter a valid name');
+    });
+    
+    emailField.addEventListener('input', () => {
+      validateField(emailField, emailRegex, 'Please enter a valid email');
+    });
+    
+    passwordField.addEventListener('input', () => {
+      validateField(passwordField, passwordRegex, 'Password requirements not met');
+    });
+    
+    confirmPasswordField.addEventListener('input', () => {
+      const isValid = confirmPasswordField.value === passwordField.value;
+      confirmPasswordField.classList.toggle('is-invalid', !isValid);
+    });
+    
+    // Form Submission
+    form.addEventListener('submit', function(e) {
+      let isValid = true;
+      
+      // Validate all fields
+      isValid &= validateField(nameField, nameRegex, 'Please enter a valid name');
+      isValid &= validateField(emailField, emailRegex, 'Please enter a valid email');
+      isValid &= validateField(passwordField, passwordRegex, 'Password requirements not met');
+      
+      // Confirm password match
+      const passwordsMatch = confirmPasswordField.value === passwordField.value;
+      confirmPasswordField.classList.toggle('is-invalid', !passwordsMatch);
+      isValid &= passwordsMatch;
+      
+      // If not valid, prevent submission
+      if (!isValid) {
+        e.preventDefault();
+      } else {
+        // Show loading spinner
+        signupBtn.querySelector('.spinner-border').classList.remove('d-none');
+        signupBtn.querySelector('.btn-text').textContent = 'Creating Account...';
+        signupBtn.disabled = true;
+      }
+    });
+    
+    // Chrome mobile viewport height fix
+    function adjustViewportHeight() {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    
+    // Initial adjustment
+    adjustViewportHeight();
+    
+    // Adjust on resize or orientation change
+    window.addEventListener('resize', adjustViewportHeight);
+    window.addEventListener('orientationchange', adjustViewportHeight);
+  });
+</script>
+
+{% endblock %}
