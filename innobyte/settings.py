@@ -34,7 +34,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = ['https://finance-management-jpcn.onrender.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
